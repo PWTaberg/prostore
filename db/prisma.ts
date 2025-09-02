@@ -18,15 +18,15 @@ export const prisma = new PrismaClient({ adapter }).$extends({
   result: {
     product: {
       //price -> priceString
-      priceString: {
-        needs: { price: true },
+      price: {
+        //needs: { price: true },
         compute(product) {
           return product.price.toString();
         }
       },
       // rating->ratingString
-      ratingString: {
-        needs: { rating: true },
+      rating: {
+        //needs: { rating: true },
         compute(product) {
           return product.rating.toString();
         }
