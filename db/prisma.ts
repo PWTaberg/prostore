@@ -7,16 +7,15 @@ import ws from "ws";
 neonConfig.webSocketConstructor = ws;
 const connectionString = `${process.env.DATABASE_URL}`;
 
-// Creates a new connection pool using the provided connection string, allowing multiple concurrent connections.
-//const pool = new Pool({ connectionString });
+// Creates a new connection pool.
+// const pool = new Pool({ connectionString });
 
 // Instantiates the Prisma adapter using the Neon connection pool to handle the connection between Prisma and Neon.
 
-// FRom Neon/Prisma  doc
+// Create a Neon connection pool
 const pool = new Pool({ connectionString });
 
-// Line below from neon - did not work
-//const adapter = new PrismaNeon(pool);
+//  Instantiate Prisma adapter with Neon
 const adapter = new PrismaNeon({ connectionString });
 
 // Extends the PrismaClient with a custom result transformer to convert the price and rating fields to strings.
@@ -24,11 +23,13 @@ export const prisma = new PrismaClient({ adapter }).$extends({
   result: {
     product: {
       price: {
+        needs: { price: true },
         compute(product) {
           return product.price.toString();
         }
       },
       rating: {
+        needs: { rating: true },
         compute(product) {
           return product.rating.toString();
         }
